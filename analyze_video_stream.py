@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
 Analyze HTTP video streaming traffic from a pcap file.
-This script:
-  1. Determines whether the video server uses a persistent or non-persistent TCP connection by counting TCP streams.
-  2. Plots throughput over time (per 200ms by default) to reveal if streaming is constant bit-rate or variable bit-rate.
+- Determines whether the video server uses a persistent or non-persistent TCP connection by counting TCP streams.
+- Plots throughput over time (per 200ms by default) to reveal if streaming is constant bit-rate or variable bit-rate.
 """
 
 import pyshark
