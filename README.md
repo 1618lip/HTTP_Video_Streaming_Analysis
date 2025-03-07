@@ -42,12 +42,17 @@ pip install pyshark matplotlib
 
 ### Project Structure
 ```bash .
-├── analyze_video_stream.py  # Main analysis script 
+├── analyze_video_stream.py  # Main analysis script
+├── analysis_overview,py
 ├── README.md                # This README file 
 └── video_stream.pcap
+├──figs....
 ```
-###Python Code for analyzing Video Stream
+### Python Code for analyzing Video Stream
 [View analyze_video_stream.py](./analyze_video_stream.py)
+
+### Overview Plotting code for showing general trends of streaming providers
+[View analyze_video_stream.py](./analysis_overview.py)
 
 ### Usage
 
