@@ -10,6 +10,9 @@ This project investigates how different video streaming services (YouTube, Vimeo
 - **Bit-Rate Analysis:**  
   Analyzing if the video server uses constant bit-rate streaming or variable bit-rate streaming that adapts to network conditions. We evaluate this by plotting the amount of data received per unit time (e.g., every 200 ms).
 
+-**Windowing: Keep in Mind:**
+  It should be noted that when choosing a sampling window for packet capture, longer windows may result in oversaturation of plotting points, making it difficult to distinguish variations, while shorter windows may not capture enough fluctuation, leading to an incomplete representation of throughput behavior. After testing various options, we settled on a 5-second window, as it provided the cleanest and most interpretable results in our analysis.
+
 ## Project Overview
 
 This project uses the following tools and libraries:
@@ -43,13 +46,16 @@ pip install pyshark matplotlib
 ├── README.md                # This README file 
 └── video_stream.pcap
 ```
+###Python Code for analyzing Video Stream
+[View analyze_video_stream.py](./analyze_video_stream.py)
+
 ### Usage
 
 ```bash
-python analyze_video_stream.py video_stream.pcap --time_window 0.2
+python analyze_video_stream.py video_stream.pcap --time_window 5
 ```
 
-The `--time_window` is optional. It is to adjust the time window for throughput calculation (default is 0.2 seconds)
+The `--time_window` is optional. It is to adjust the time window for throughput calculation (our default was 5 seconds)
 
 ### 3. Interpret the Results
 
@@ -81,6 +87,8 @@ The script generates throughput plots (bits per second) over time to identify th
 - **Methodology:**  
   The script bins packet data over fixed time intervals (default: 200 ms) and calculates the throughput in bits per second.  
   - **Plotting:** A line plot of throughput vs. time is generated for each TCP stream.
+  - **Cumulative Throughput Function**
+    The cumulative throughput function aggregates the throughput of all TCP streams, providing an overall view of the data transferred during the session. This helps visualize total throughput over time as if it were a continuous stream.
 
 - **Interpretation:**  
   - **Constant Throughput:** Likely constant bit-rate streaming.
@@ -88,32 +96,38 @@ The script generates throughput plots (bits per second) over time to identify th
 
 ## Figures & Plots
 
-Below are placeholders for figures and plots that will be added as the analysis progresses. Replace these placeholders with your actual figures:
-
 - **Figure 1:** Overview of TCP Streams, Packet Count per Streaming Service  
   *Description: A diagram showing the number of TCP streams and packet count increase for each service as identified during the analysis.*
 
   ![Figure 1](figure1.png)
 
-- **Figure 2:** Throughput Plot for YouTube  
-  *Description: A throughput vs. time plot for a video streaming session on YouTube.*
+- **Figures 2 and 3:** Throughput Plots for YouTube  
+  *Description: A throughput vs. time plot for a video streaming session on YouTube. As well as the cumulative plot*
 
-  ![Figure 2](figure2.png)
+  ![Figure 2](youtube_streams.png)
+  ![Figure 3](youtube_cumu.png)
+  
 
-- **Figure 3:** Throughput Plot for Vimeo  
-  *Description: A throughput vs. time plot for a video streaming session on Vimeo.*
+- **Figures 4 and 5:** Throughput Plots for Vimeo  
+  *Description: A throughput vs. time plot for a video streaming session on Vimeo. As well as the cumulative plot*
 
-  ![Figure 3](figure3.png)
+  ![Figure 4](vimeo_streams.png)
+  ![Figure 5](vimeo_cumu.png)
+  
 
-- **Figure 4:** Throughput Plot for Dropbox  
-  *Description: A throughput vs. time plot for a video streaming session on Dropbox.*
+- **Figure 6 and 7:** Throughput Plot for Dropbox  
+  *Description: A throughput vs. time plot for a video streaming session on Dropbox. As well as the cumulative plot*
 
-  ![Figure 4](figure4.png)
+  ![Figure 6](dropbox_streams.png)
+  ![Figure 7](dropbox_cumu.png)
+  
 
-- **Figure 5:** Throughput Plot for Google Drive  
-  *Description: A throughput vs. time plot for a video streaming session on Google Drive.*
+- **Figure 8 and 9:** Throughput Plot for Google Drive  
+  *Description: A throughput vs. time plot for a video streaming session on Google Drive. As well as the cumulative plot*
 
-  ![Figure 5](figure5.png)
+  ![Figure 8](google_streams.png)
+  ![Figure 9](google_cumu.png)
+  
 
 ## Experimentation
 
@@ -124,8 +138,10 @@ For a fair and thorough comparison:
 
 ## Conclusion
 
-This project provides insights into the streaming strategies used by popular video services by analyzing connection persistence and bit-rate adaptation. The results help in understanding how streaming services optimize content delivery based on network conditions.
+This project provides insights into the streaming strategies used by popular video services by analyzing connection persistence and bit-rate adaptation. We determined that all analyzed services utilized persistent TCP connections, leveraging multiple streams to transfer packets efficiently. Instead of relying on a single TCP connection, these services strategically employed multiple TCP streams to enhance data transfer efficiency, improve resilience to packet loss, and optimize congestion management.
 
-## License
+Each service dynamically switched between multi-bitrate streaming and steady-rate streaming. When network conditions fluctuated, adaptive multi-bitrate streaming adjusted throughput to ensure smooth playback. Conversely, during stable network conditions, steady-rate streaming facilitated efficient and consistent video delivery.
 
-This project is provided for educational purposes. You are free to modify and use it as needed.
+It is important to note that plot variations across services may arise due to differences in video quality settings during playback. While video duration and network conditions were controlled, streaming platforms may have automatically adjusted resolution and compression settings based on internal algorithms, device capabilities, or initial bandwidth estimation. As a result, some services exhibited higher throughput fluctuations, indicating adaptive streaming responding to perceived network conditions, while others maintained a steadier throughput pattern, suggesting a pre-buffered or fixed-bitrate approach.
+
+Ultimately, these findings offer valuable insights into how streaming services optimize content delivery, balancing performance and quality by adapting to network congestion, device capabilities, and real-time bandwidth availability.
