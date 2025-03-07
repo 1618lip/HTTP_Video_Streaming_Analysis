@@ -90,30 +90,30 @@ The script generates throughput plots (bits per second) over time to identify th
 
 Below are placeholders for figures and plots that will be added as the analysis progresses. Replace these placeholders with your actual figures:
 
-- **Figure 1:** Overview of TCP Streams  
-  *Description: A diagram or screenshot showing the number of TCP streams identified during the analysis.*
+- **Figure 1:** Overview of TCP Streams, Packet Count per Streaming Service  
+  *Description: A diagram showing the number of TCP streams and packet count increase for each service as identified during the analysis.*
 
-  ![Figure 1](path/to/figure1.png)
+  ![Figure 1](figure1.png)
 
 - **Figure 2:** Throughput Plot for YouTube  
   *Description: A throughput vs. time plot for a video streaming session on YouTube.*
 
-  ![Figure 2](path/to/figure2.png)
+  ![Figure 2](figure2.png)
 
 - **Figure 3:** Throughput Plot for Vimeo  
   *Description: A throughput vs. time plot for a video streaming session on Vimeo.*
 
-  ![Figure 3](path/to/figure3.png)
+  ![Figure 3](figure3.png)
 
 - **Figure 4:** Throughput Plot for Dropbox  
   *Description: A throughput vs. time plot for a video streaming session on Dropbox.*
 
-  ![Figure 4](path/to/figure4.png)
+  ![Figure 4](figure4.png)
 
 - **Figure 5:** Throughput Plot for Google Drive  
   *Description: A throughput vs. time plot for a video streaming session on Google Drive.*
 
-  ![Figure 5](path/to/figure5.png)
+  ![Figure 5](figure5.png)
 
 ## Experimentation
 
