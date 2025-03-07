@@ -48,16 +48,35 @@ pip install pyshark matplotlib
 └── video_stream.pcap
 ├──figs....
 ```
+## Experimentation
+
+For a fair and thorough comparison:
+- Ensure similar video content and duration across all services.
+- Use the same WiFi network and similar link conditions for each capture.
+- Experiment by varying link quality (e.g., moving the device farther from the access point or placing it behind a wall) to observe how each service adapts its streaming bit-rate.
+
+
 ### Python Code for analyzing Video Stream
 [View analyze_video_stream.py](./analyze_video_stream.py)
+- The analyze_video_stream.py code does:
+- Group TCP packets by their stream identifier to assess the persistence of TCP connections (using Wireshark’s tcp.stream field).
+- Compute and plot throughput over fixed time windows to determine whether the video streaming is constant or variable bit-rate.
+- Visualize each stream and how it changes (steady or not) for each session within the given time window)
 
 ### Overview Plotting code for showing general trends of streaming providers
 [View analyze_video_stream.py](./analysis_overview.py)
+- The analysis_overview.py code does:
+- Define data we recorded from each experiment.
+- Format into groups labeled by each streaming service.
+- Provide visual comparisons of packet number and TCP stream count tied to the respective streaming service.
+
 
 ### Usage
 
 ```bash
-python analyze_video_stream.py video_stream.pcap --time_window 5
+python3 analyze_video_stream.py video_stream.pcap --time_window 5
+
+python3 analysis_overview.py //after updating data
 ```
 
 The `--time_window` is optional. It is to adjust the time window for throughput calculation (our default was 5 seconds)
@@ -77,7 +96,6 @@ The script generates throughput plots (bits per second) over time to identify th
 - **Fluctuating Throughput:** Suggests adaptive streaming that adjusts to network conditions.
 
 ## Analysis Details
-
 ### Connection Persistence Analysis
 
 - **Methodology:**  
@@ -90,7 +108,7 @@ The script generates throughput plots (bits per second) over time to identify th
 ### Bit-Rate Analysis
 
 - **Methodology:**  
-  The script bins packet data over fixed time intervals (default: 200 ms) and calculates the throughput in bits per second.  
+  The script bins packet data over fixed time intervals (default: 5s) and calculates the throughput in bits per second.  
   - **Plotting:** A line plot of throughput vs. time is generated for each TCP stream.
   - **Cumulative Throughput Function**
     The cumulative throughput function aggregates the throughput of all TCP streams, providing an overall view of the data transferred during the session. This helps visualize total throughput over time as if it were a continuous stream.
@@ -102,7 +120,7 @@ The script generates throughput plots (bits per second) over time to identify th
 ## Figures & Plots
 
 - **Figure 1:** Overview of TCP Streams, Packet Count per Streaming Service  
-  *Description: A diagram showing the number of TCP streams and packet count increase for each service as identified during the analysis.*
+  *Description: A diagram showing the number of TCP streams and packet count increase for each service as identified during the analysis. This is the resulting figure from analysis_overview.py *
 
   ![Figure 1](figure1.png)
 
@@ -132,15 +150,8 @@ The script generates throughput plots (bits per second) over time to identify th
 
   ![Figure 8](google_streams.png)
   ![Figure 9](google_cumu.png)
+
   
-
-## Experimentation
-
-For a fair and thorough comparison:
-- Ensure similar video content and duration across all services.
-- Use the same WiFi network and similar link conditions for each capture.
-- Experiment by varying link quality (e.g., moving the device farther from the access point or placing it behind a wall) to observe how each service adapts its streaming bit-rate.
-
 ## Conclusion
 
 This project provides insights into the streaming strategies used by popular video services by analyzing connection persistence and bit-rate adaptation. We determined that all analyzed services utilized persistent TCP connections, leveraging multiple streams to transfer packets efficiently. Instead of relying on a single TCP connection, these services strategically employed multiple TCP streams to enhance data transfer efficiency, improve resilience to packet loss, and optimize congestion management.
